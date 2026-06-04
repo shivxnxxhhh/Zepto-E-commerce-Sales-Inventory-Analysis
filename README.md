@@ -161,4 +161,4 @@ Dataset is synthetic, generated to mirror the structure of the [Kaggle Zepto inv
 
 ---
 
-*Built by [Shivansh](https://github.com/shivxnxxhhh) · June 2026*
+*Built by [Kaushtubh Mishra](https://github.com/shivxnxxhhh) · June 2026*
