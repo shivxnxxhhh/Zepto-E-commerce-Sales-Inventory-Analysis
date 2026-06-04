@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zepto Inventory Analysis</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar / Navigation -->
+        <aside class="sidebar">
+            <div class="logo-container">
+                <div class="logo">Z</div>
+                <h2>Zepto Analytics</h2>
+            </div>
+            <nav>
+                <ul>
+                    <li class="active"><a href="#overview">Overview</a></li>
+                    <li><a href="#sales">Sales Potential</a></li>
+                    <li><a href="#discounts">Discount Analysis</a></li>
+                    <li><a href="#stock">Stock Status</a></li>
+                </ul>
+            </nav>
+            <div class="filter-section">
+                <h3>Global Filters</h3>
+                <div class="filter-group">
+                    <label for="category-filter">Category</label>
+                    <select id="category-filter">
+                        <option value="all">All Categories</option>
+                    </select>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header Section -->
+            <header>
+                <div>
+                    <h1>Inventory & Pricing Intelligence</h1>
+                    <p class="subtitle">Real-time analysis of catalog performance, stockouts, and discount effectiveness.</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn-primary" onclick="window.print()">Export Report</button>
+                </div>
+            </header>
+
+            <!-- KPI Cards -->
+            <section class="kpi-grid" id="overview">
+                <div class="kpi-card">
+                    <div class="kpi-icon total-skus">📦</div>
+                    <div class="kpi-details">
+                        <p class="kpi-label">Total SKUs</p>
+                        <h3 class="kpi-value" id="kpi-skus">-</h3>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon revenue">💰</div>
+                    <div class="kpi-details">
+                        <p class="kpi-label">Revenue Potential</p>
+                        <h3 class="kpi-value" id="kpi-revenue">-</h3>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon inventory">🏢</div>
+                    <div class="kpi-details">
+                        <p class="kpi-label">Inventory Value (MRP)</p>
+                        <h3 class="kpi-value" id="kpi-inventory">-</h3>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon oos">⚠️</div>
+                    <div class="kpi-details">
+                        <p class="kpi-label">Out of Stock Rate</p>
+                        <h3 class="kpi-value" id="kpi-oos">-</h3>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Charts Grid -->
+            <section class="charts-grid">
+                <!-- Revenue by Category -->
+                <div class="chart-card span-2" id="sales">
+                    <div class="chart-header">
+                        <h3>Estimated Revenue by Category</h3>
+                        <p>Potential sales value of in-stock items</p>
+                    </div>
+                    <div class="chart-body">
+                        <canvas id="revenueChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- OOS Rate by Category -->
+                <div class="chart-card" id="stock">
+                    <div class="chart-header">
+                        <h3>Out-of-Stock Rate by Category</h3>
+                        <p>Categories with critical supply gaps</p>
+                    </div>
+                    <div class="chart-body">
+                        <canvas id="oosChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Stock Status Stacked Bar -->
+                <div class="chart-card span-3">
+                    <div class="chart-header">
+                        <h3>Inventory Depth Check</h3>
+                        <p>In-stock vs Out-of-stock SKUs per category</p>
+                    </div>
+                    <div class="chart-body">
+                        <canvas id="stockStatusChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Discount Distribution -->
+                <div class="chart-card span-2" id="discounts">
+                    <div class="chart-header">
+                        <h3>Discount Strategy Distribution</h3>
+                        <p>Count of SKUs in each discount bracket</p>
+                    </div>
+                    <div class="chart-body">
+                        <canvas id="discountDistChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Discount vs OOS Correlation -->
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Discount Impact on Stockouts</h3>
+                        <p>Do deep discounts lead to stockouts?</p>
+                    </div>
+                    <div class="chart-body">
+                        <canvas id="discountOosChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Price vs Discount Scatter -->
+                <div class="chart-card span-3">
+                    <div class="chart-header">
+                        <h3>MRP vs Discount Landscape</h3>
+                        <p>Pricing strategy across the catalog</p>
+                    </div>
+                    <div class="chart-body scatter-container">
+                        <canvas id="scatterChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Data Table Section -->
+            <section class="table-section">
+                <div class="chart-header">
+                    <h3>Top 10 Revenue-Driving Products</h3>
+                    <p>Highest potential revenue if sold out</p>
+                </div>
+                <div class="table-responsive">
+                    <table id="topProductsTable">
+                        <thead>
+                            <tr>
+                                <th>Product Name</th>
+                                <th>Category</th>
+                                <th>Est. Revenue (₹)</th>
+                                <th>Discount %</th>
+                                <th>Available Qty</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Data source generated from Python script -->
+    <script src="data.js"></script>
+    <!-- Main Dashboard Logic -->
+    <script src="app.js"></script>
+</body>
+</html>
